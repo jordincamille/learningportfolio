@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case File: The Investigation of a Question, A Learning Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B2A4A;
+    --ink-soft:#3C4A66;
+    --paper:#FFFFFF;
+    --panel:#EEF0F4;
+    --kraft:#B8873D;
+    --kraft-soft:#F1E4C8;
+    --teal:#2F6F6F;
+    --teal-soft:#DCEBEA;
+    --stamp:#A63346;
+    --stamp-soft:#F5DEDE;
+    --line:#D7D9E0;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    color:var(--ink);
+    margin:0;
+    font-weight:600;
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:.03em;
+  }
+  a{color:var(--teal);}
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 32px;}
+  .icon{width:22px;height:22px;flex-shrink:0;}
+
+  /* ---------- TAB NAV ---------- */
+  #tabnav{
+    position:fixed;
+    top:0; right:0;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+    padding-top:120px;
+  }
+  #tabnav a{
+    display:block;
+    text-decoration:none;
+    background:var(--kraft);
+    color:#fff;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    padding:13px 10px 13px 16px;
+    margin-bottom:6px;
+    border-radius:6px 0 0 6px;
+    box-shadow:-2px 3px 6px rgba(27,42,74,.18);
+    transform:translateX(46px);
+    transition:transform .18s ease;
+    writing-mode:vertical-rl;
+    text-orientation:mixed;
+  }
+  #tabnav a:hover, #tabnav a:focus-visible{transform:translateX(0);}
+  #tabnav a:nth-child(1){background:var(--ink);}
+  #tabnav a:nth-child(2){background:var(--kraft);}
+  #tabnav a:nth-child(3){background:var(--teal);}
+  #tabnav a:nth-child(4){background:var(--stamp);}
+  #tabnav a:nth-child(5){background:var(--ink-soft);}
+  @media (max-width:720px){
+    #tabnav{display:none;}
+  }
+
+  /* ---------- COVER ---------- */
+  .cover{
+    min-height:100vh;
+    background:var(--ink);
+    color:#F4F1E8;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    padding:64px 32px;
+  }
+  .cover::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 42px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 42px);
+    pointer-events:none;
+  }
+  .case-no{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:#C7B074;
+    letter-spacing:.08em;
+    margin-bottom:28px;
+    position:relative;
+  }
+  .cover h1{
+    color:#F7F4EA;
+    font-size:clamp(40px,7vw,74px);
+    line-height:1.04;
+    max-width:820px;
+    position:relative;
+  }
+  .cover .subtitle{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    color:#C7B074;
+    font-size:clamp(18px,2.4vw,24px);
+    margin-top:22px;
+    max-width:600px;
+    position:relative;
+  }
+  .cover .meta-row{
+    margin-top:56px;
+    display:flex;
+    gap:40px;
+    flex-wrap:wrap;
+    position:relative;
+  }
+  .meta-block .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:#8C97B3;
+    letter-spacing:.1em;
+  }
+  .meta-block .v{
+    font-size:16px;
+    color:#F4F1E8;
+    margin-top:4px;
+  }
+  .stamp-cover{
+    position:absolute;
+    right:40px; bottom:48px;
+    border:3px solid #C7B074;
+    color:#C7B074;
+    border-radius:8px;
+    padding:10px 18px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:.12em;
+    transform:rotate(-6deg);
+    opacity:.85;
+  }
+  @media (max-width:600px){ .stamp-cover{position:static; margin-top:40px; display:inline-block; transform:rotate(-3deg);} }
+
+  /* ---------- SECTION SHELL ---------- */
+  section.doc{
+    padding:96px 0 40px;
+    border-bottom:1px solid var(--line);
+  }
+  .doc-head{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    margin-bottom:8px;
+  }
+  .doc-head .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.08em;
+    padding:4px 10px;
+    border-radius:4px;
+    white-space:nowrap;
+    margin-top:8px;
+  }
+  .doc-head h2{
+    font-size:clamp(30px,4vw,42px);
+    line-height:1.1;
+  }
+  .doc-sub{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:19px;
+    margin:10px 0 0 0;
+  }
+  .field-strip{
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+    margin:30px 0 40px;
+    padding:16px 20px;
+    background:var(--panel);
+    border-radius:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+  }
+  .field-strip div span{display:block;color:#8890A0;font-size:11px;letter-spacing:.06em;margin-bottom:2px;}
+
+  /* ---------- TOC / TIMELINE ---------- */
+  .toc-intro{max-width:640px;font-size:18px;color:var(--ink-soft);}
+  .timeline{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin:44px 0 12px;
+  }
+  @media (max-width:720px){.timeline{grid-template-columns:1fr;}}
+  .tstep{
+    background:var(--panel);
+    border-radius:10px;
+    padding:20px 18px;
+    position:relative;
+  }
+  .tstep .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--teal);
+  }
+  .tstep h3{font-size:18px;margin-top:8px;}
+  .tstep p{font-size:14px;color:var(--ink-soft);margin:8px 0 0;}
+  .tstep::after{
+    content:"›";
+    position:absolute;
+    right:-16px; top:44%;
+    font-size:24px;
+    color:#B7BCC8;
+  }
+  @media (max-width:720px){.tstep::after{display:none;}}
+  .tstep:last-child::after{display:none;}
+
+  .exhibit-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:44px 0 12px;}
+  @media (max-width:760px){.exhibit-cards{grid-template-columns:1fr;}}
+  .ecard{
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px;
+  }
+  .ecard .tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;padding:3px 8px;border-radius:4px;margin-bottom:12px;}
+  .ecard h3{font-size:20px;}
+  .ecard p{font-size:14.5px;color:var(--ink-soft);margin-top:10px;}
+
+  /* ---------- REFLECTION / PEE ---------- */
+  .reflection{
+    margin-top:44px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  .reflection-head{
+    padding:16px 22px;
+    background:var(--ink);
+    color:#F4F1E8;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.08em;
+  }
+  .pee{padding:6px 22px 24px;}
+  .pee-row{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:18px;
+    padding:16px 0;
+    border-top:1px dashed var(--line);
+  }
+  .pee-row:first-child{border-top:none;}
+  .pee-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    padding:5px 10px;
+    border-radius:5px;
+    height:fit-content;
+  }
+  .pee-label.point{background:var(--stamp-soft);color:var(--stamp);}
+  .pee-label.evidence{background:var(--kraft-soft);color:#8C6318;}
+  .pee-label.explanation{background:var(--teal-soft);color:var(--teal);}
+  .pee-row p{margin:0;font-size:15.5px;}
+
+  /* ---------- UNIVERSITY EXHIBIT ---------- */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0;}
+  @media (max-width:640px){.compare{grid-template-columns:1fr;}}
+  .compare .col{border:1px solid var(--line);border-radius:10px;padding:20px;}
+  .compare .col h4{font-family:'Fraunces',serif;font-size:19px;margin:0 0 4px;}
+  .compare .col .place{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--teal);margin-bottom:12px;}
+  .compare ul{margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-soft);}
+  .compare li{margin-bottom:7px;}
+
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0 8px;}
+  @media (max-width:640px){.why-grid{grid-template-columns:1fr;}}
+  .why-item{display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--panel);border-radius:8px;}
+  .why-item p{margin:0;font-size:14.5px;}
+  .why-item .icon{color:var(--teal);}
+
+  .chart{margin:30px 0;}
+  .bar-row{display:grid;grid-template-columns:150px 1fr 34px;align-items:center;gap:10px;margin-bottom:10px;font-size:14px;}
+  .bar-track{background:var(--panel);border-radius:5px;height:14px;overflow:hidden;}
+  .bar-fill{background:var(--teal);height:100%;border-radius:5px;}
+
+  /* ---------- ESSAY DOCS ---------- */
+  .manuscript{
+    position:relative;
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:40px 36px;
+    margin-top:24px;
+    background:var(--paper);
+    font-family:'Fraunces', serif;
+    font-size:17px;
+    line-height:1.85;
+    color:#26314E;
+  }
+  .manuscript p{margin:0 0 18px;}
+  .manuscript p:last-child{margin-bottom:0;}
+  .doc-stamp{
+    position:absolute;
+    top:26px; right:26px;
+    border:2.5px solid;
+    border-radius:6px;
+    padding:6px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.1em;
+    transform:rotate(6deg);
+  }
+  .doc-stamp.draft{border-color:var(--kraft);color:var(--kraft);}
+  .doc-stamp.final{border-color:var(--teal);color:var(--teal);}
+
+  .worknote{
+    background:var(--kraft-soft);
+    border-left:3px solid var(--kraft);
+    padding:12px 16px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:#7A5A16;
+    border-radius:0 6px 6px 0;
+    margin:22px 0;
+  }
+  .worknote::before{content:"WORKING NOTE: ";font-weight:600;}
+
+  .revision{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+    margin:20px 0;
+  }
+  @media (max-width:640px){.revision{grid-template-columns:1fr;}}
+  .revision .from, .revision .to{
+    border-radius:8px;
+    padding:16px 18px;
+    font-size:14.5px;
+    line-height:1.6;
+  }
+  .revision .from{background:var(--stamp-soft);}
+  .revision .to{background:var(--teal-soft);}
+  .revision .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;display:block;margin-bottom:8px;}
+  .revision .from .k{color:var(--stamp);}
+  .revision .to .k{color:var(--teal);}
+  .rev-why{font-size:14px;color:var(--ink-soft);margin:10px 0 34px;padding-left:2px;}
+
+  .scan-card{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    margin:26px 0;
+    background:var(--panel);
+  }
+  .scan-ring{
+    width:52px;height:52px;border-radius:50%;
+    border:5px solid var(--teal);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;color:var(--teal);flex-shrink:0;
+  }
+  .scan-card p{margin:0;font-size:14.5px;color:var(--ink-soft);}
+  .scan-card strong{color:var(--ink);}
+
+  /* ---------- FINDINGS ---------- */
+  .findings-hero{
+    background:var(--ink);
+    color:#F4F1E8;
+    border-radius:14px;
+    padding:44px 36px;
+    margin:20px 0 40px;
+  }
+  .findings-hero p.lead{font-family:'Fraunces',serif;font-style:italic;font-size:22px;max-width:640px;line-height:1.5;color:#F0E9D6;}
+  .grow-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:36px 0;}
+  @media (max-width:720px){.grow-grid{grid-template-columns:1fr;}}
+  .grow-card{border:1px solid var(--line);border-radius:10px;padding:20px;}
+  .grow-card .stage{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--kraft);letter-spacing:.06em;}
+  .grow-card h4{font-family:'Fraunces',serif;font-size:19px;margin:8px 0 8px;}
+  .grow-card p{font-size:14px;color:var(--ink-soft);margin:0;}
+
+  .closing-quote{
+    max-width:680px;
+    margin:52px auto 0;
+    text-align:center;
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:clamp(20px,2.6vw,26px);
+    color:var(--ink);
+    line-height:1.5;
+  }
+  .signature{
+    margin-top:60px;
+    padding-bottom:100px;
+    text-align:center;
+  }
+  .signature .name{font-family:'Fraunces',serif;font-size:24px;font-style:italic;}
+  .signature .date{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8890A0;margin-top:6px;}
+
+  p.body-copy{font-size:16px;color:var(--ink-soft);max-width:680px;}
+</style>
+</head>
+<body>
+
+<nav id="tabnav">
+  <a href="#toc">CONTENTS</a>
+  <a href="#exhibit-a">EXHIBIT A</a>
+  <a href="#exhibit-b">EXHIBIT B</a>
+  <a href="#exhibit-c">EXHIBIT C</a>
+  <a href="#findings">FINDINGS</a>
+</nav>
+
+<!-- ============ COVER ============ -->
+<header class="cover">
+  <div class="wrap" style="padding:0;">
+    <div class="case-no mono">CASE FILE NO. JCA&ndash;2026 &nbsp;·&nbsp; STATUS: OPEN</div>
+    <h1>The Investigation<br>of a Question</h1>
+    <p class="subtitle">A learning portfolio on curiosity, revision, and the road to a Data Analytics degree in Germany.</p>
+    <div class="meta-row">
+      <div class="meta-block">
+        <div class="k mono">SUBJECT</div>
+        <div class="v">Jordin Camille Adhityo</div>
+      </div>
+      <div class="meta-block">
+        <div class="k mono">UNIT</div>
+        <div class="v">University Research &amp; Personal Statement</div>
+      </div>
+      <div class="meta-block">
+        <div class="k mono">EXHIBITS FILED</div>
+        <div class="v">3</div>
+      </div>
+    </div>
+  </div>
+  <div class="stamp-cover">STUDENT COPY</div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ TABLE OF CONTENTS ============ -->
+<section class="doc" id="toc">
+  <div class="doc-head">
+    <h2>Opening the File</h2>
+  </div>
+  <p class="doc-sub">Every case starts with a question. Mine started with one word: inquisitive.</p>
+  <p class="toc-intro" style="margin-top:26px;">Three pieces of evidence sit in this file, filed in the order I made them. Read together, they trace the same investigation from two different directions, one asking <em>which university</em> and the other asking <em>who I am</em>, until, by the final exhibit, both questions answer each other.</p>
+
+  <div class="timeline">
+    <div class="tstep">
+      <div class="num mono">STEP 01</div>
+      <h3>Indonesian Diploma</h3>
+      <p>12 years of schooling in Jakarta, not directly recognized by German universities.</p>
+    </div>
+    <div class="tstep">
+      <div class="num mono">STEP 02</div>
+      <h3>Studienkolleg</h3>
+      <p>A 1-year bridge program. W-Kurs: Maths, Statistics, Economics, Business German.</p>
+    </div>
+    <div class="tstep">
+      <div class="num mono">STEP 03</div>
+      <h3>Feststellungsprüfung</h3>
+      <p>The German university entrance exam that closes out the Studienkolleg.</p>
+    </div>
+    <div class="tstep">
+      <div class="num mono">STEP 04</div>
+      <h3>Bachelor's Degree</h3>
+      <p>A Data Analytics / Wirtschaftsinformatik program at a German public university.</p>
+    </div>
+  </div>
+
+  <div class="exhibit-cards">
+    <div class="ecard">
+      <span class="tag" style="background:var(--kraft-soft);color:#8C6318;">EXHIBIT A</span>
+      <h3>Potential Universities</h3>
+      <p>The research file: two Studienkolleg options, two target universities, and the evidence I used to compare them.</p>
+    </div>
+    <div class="ecard">
+      <span class="tag" style="background:var(--stamp-soft);color:var(--stamp);">EXHIBIT B</span>
+      <h3>Draft Personal Statement</h3>
+      <p>The first full account of the story: strong on voice, unfinished on argument.</p>
+    </div>
+    <div class="ecard">
+      <span class="tag" style="background:var(--teal-soft);color:var(--teal);">EXHIBIT C</span>
+      <h3>Final Personal Statement</h3>
+      <p>The revised account, closing the loop between where I came from and where I'm asking to go.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXHIBIT A ============ -->
+<section class="doc" id="exhibit-a">
+  <div class="doc-head">
+    <span class="tag" style="background:var(--kraft-soft);color:#8C6318;">EXHIBIT A</span>
+    <h2>Potential Universities</h2>
+  </div>
+  <p class="doc-sub">My Road to a Data Analytics Degree in Germany</p>
+
+  <div class="field-strip">
+    <div><span>FORMAT</span>12-slide research presentation</div>
+    <div><span>FOCUS</span>2 Studienkolleg options · 2 target universities</div>
+    <div><span>METHOD</span>Cost, language, fit &amp; outcomes comparison</div>
+  </div>
+
+  <p class="body-copy">Before I could write a single word about why I wanted to study in Germany, I had to find out whether the plan actually worked. An Indonesian diploma isn't directly recognized there, so the real first question wasn't "which university"; it was "which bridge gets me to one."</p>
+
+  <h3 style="margin-top:38px;font-size:22px;">Why Data Analytics, Why Germany</h3>
+  <div class="why-grid">
+    <div class="why-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19h16M7 16V9M12 16V5M17 16v-7"/></svg>
+      <p>Matches my strengths (statistics, coding, business acumen) and is in demand across every industry.</p>
+    </div>
+    <div class="why-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-6-3.8-9s1.3-6.4 3.8-9z"/></svg>
+      <p>Public universities are tuition-free; a semester fee of roughly &euro;300&ndash;400 is the only cost.</p>
+    </div>
+    <div class="why-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+      <p>A strong engineering &amp; industrial economy, with SAP, Siemens, and Deutsche Bahn, plus a growing Berlin tech scene.</p>
+    </div>
+    <div class="why-item">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.3"/><path d="M2.5 20c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6"/><circle cx="17.5" cy="8.5" r="2.5"/><path d="M15 14.2c2.6.4 4.5 2.5 4.5 5.3"/></svg>
+      <p>A large international student community: TU Berlin alone hosts students from 130+ nationalities.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:44px;font-size:22px;">The Bridge Step: Two Studienkolleg Options</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Niedersächsisches Studienkolleg</h4>
+      <div class="place mono">HANNOVER</div>
+      <ul>
+        <li>Attached to Leibniz Universität Hannover, same city as my first-choice program</li>
+        <li>Free course, semester contribution only</li>
+        <li>German B1&ndash;B2 for the entrance test</li>
+        <li>10-month course, ending in the FSP</li>
+        <li>~532K city population · ~50K students</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Studienkolleg der TU Berlin</h4>
+      <div class="place mono">BERLIN</div>
+      <ul>
+        <li>On the TU Berlin campus, offering early exposure to university life</li>
+        <li>Course, entrance test &amp; FSP all free; semester fee only</li>
+        <li>German B2 required; W-Kurs also needs English A2+</li>
+        <li>Two semesters, campus-based</li>
+        <li>130+ nationalities on campus</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:44px;font-size:22px;">Two Target Universities</h3>
+  <div class="compare">
+    <div class="col">
+      <h4>Leibniz Universität Hannover</h4>
+      <div class="place mono">WIRTSCHAFTSINFORMATIK</div>
+      <ul>
+        <li>TU9 member, one of Germany's nine leading technical institutes</li>
+        <li>Research group in Econometrics &amp; Data Science</li>
+        <li>~30,000 students across 9 faculties</li>
+        <li>Tuition-free; strong ties to German industry</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h4>Technische Universität Berlin</h4>
+      <div class="place mono">INFORMATION SYSTEMS MANAGEMENT</div>
+      <ul>
+        <li>DIMA research group: database systems, data engineering &amp; analysis</li>
+        <li>Program built for Data Scientist / AI Engineer careers</li>
+        <li>Industry links: Siemens, BMW, Deutsche Bahn, SAP</li>
+        <li>No tuition fees; semester fee &euro;300&ndash;400</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:44px;font-size:22px;">Self-Rated Fit</h3>
+  <p class="body-copy" style="margin-bottom:0;">I measured my own strengths against what the degree demands, before deciding it was worth the move.</p>
+  <div class="chart">
+    <div class="bar-row"><div>Statistics</div><div class="bar-track"><div class="bar-fill" style="width:90%;"></div></div><div>9/10</div></div>
+    <div class="bar-row"><div>Communication</div><div class="bar-track"><div class="bar-fill" style="width:90%;"></div></div><div>9/10</div></div>
+    <div class="bar-row"><div>Critical Thinking</div><div class="bar-track"><div class="bar-fill" style="width:90%;"></div></div><div>9/10</div></div>
+    <div class="bar-row"><div>Coding</div><div class="bar-track"><div class="bar-fill" style="width:80%;"></div></div><div>8/10</div></div>
+    <div class="bar-row"><div>Business Acumen</div><div class="bar-track"><div class="bar-fill" style="width:80%;"></div></div><div>8/10</div></div>
+    <div class="bar-row"><div>Leadership</div><div class="bar-track"><div class="bar-fill" style="width:80%;"></div></div><div>8/10</div></div>
+    <div class="bar-row"><div>Market Awareness</div><div class="bar-track"><div class="bar-fill" style="width:80%;"></div></div><div>8/10</div></div>
+  </div>
+
+  <!-- Reflection -->
+  <div class="reflection">
+    <div class="reflection-head">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px;"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+      REFLECTION: EXHIBIT A
+    </div>
+    <div class="pee">
+      <div class="pee-row">
+        <span class="pee-label point mono">POINT</span>
+        <p>This assessment taught me to turn a life-changing decision into a structured comparison, instead of a feeling.</p>
+      </div>
+      <div class="pee-row">
+        <span class="pee-label evidence mono">EVIDENCE</span>
+        <p>I didn't just pick "Germany"; I weighed Hannover's single-institution, 10-month track against Berlin's two-semester, multicultural campus track on cost, language requirements, and where each one actually feeds afterward, before choosing what to prioritize.</p>
+      </div>
+      <div class="pee-row">
+        <span class="pee-label explanation mono">EXPLANATION</span>
+        <p>That habit, laying evidence side by side before deciding, is the exact skill Data Analytics rewards. Making this slide deck was the first time I used it on my own life, not just on a dataset.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXHIBIT B ============ -->
+<section class="doc" id="exhibit-b">
+  <div class="doc-head">
+    <span class="tag" style="background:var(--stamp-soft);color:var(--stamp);">EXHIBIT B</span>
+    <h2>Draft Personal Statement</h2>
+  </div>
+  <p class="doc-sub">The first full account: strong on voice, unfinished on argument.</p>
+
+  <div class="field-strip">
+    <div><span>STATUS</span>First complete draft</div>
+    <div><span>STRENGTH</span>Narrative voice &amp; imagery</div>
+    <div><span>GAP</span>No bridge to major or university</div>
+  </div>
+
+  <div class="manuscript">
+    <div class="doc-stamp draft">DRAFT</div>
+    <p>&ldquo;Inquisitive. You ask a lot of questions,&rdquo; Ms. Kier answered after two minutes of scouring for an adjective that best described me; as she predicted about me, I subconsciously asked her more questions: &ldquo;Is that a good thing? What does inquisitive mean exactly?&rdquo;</p>
+    <p>I counted the number of syllables in the word. Four, a terribly unlucky number in Chinese culture, because I hoped that it would be five-syllables-long to match my lucky number and identified the etymology of inquisitive (prefix in- meaning in; -quis- meaning to seek; suffix -tive meaning tendency) to realize that the word means a tendency to seek. Words like &ldquo;curious&rdquo; and &ldquo;knowledge-seeking&rdquo; in Ms. Kier&rsquo;s definition substantiated my etymological epiphany, and I sensed inquisitive&rsquo;s positive connotation but wondered: my questions are a good thing?</p>
+    <p>Asking questions and actively participating in &ldquo;adult conversations&rdquo; are acts that diu lian [lose face] and bring shame. I grew up being instructed to stare at the shriveling cabbage in the hot-pot broth rather than to converse with family friends about their unfamiliar lives. I never found just eating fulfilling but gaining answers to questions, like &ldquo;Where did you get that ring?&rdquo; &ldquo;How did you meet my mother?&rdquo; &ldquo;What happened when you first came to Jakarta?&rdquo;- satiating. Everyone at the dinner table was a book to decode with anecdotes that may foreshadow my future, teach me a lesson, or make for an incredibly amusing story.</p>
+    <p>However, when it was decided that I lost too much face, I was instructed to complete math workbooks. Learning multiplication in the first-grade, a year before I was supposed to learn it in school, and realizing that five-times-five makes a number too big to count on my hands shattered my confidence. When my questions about the multiplication table were met with disappointment, questions became a symbol of stupidity.</p>
+    <p>The fear of losing face puppeteered me with strings of anxiety and shame of asking a &ldquo;useless question&rdquo; or giving a wrong answer in front of the whole class. I retreated into silence and suppressed my questions for years until I sat in Ms. Kier&rsquo;s classroom.</p>
+    <p>Like a moth flying towards a light bulb, I desperately wanted to know the answers behind each of Ms. Kier&rsquo;s guided questions in her English class; she always had an illuminating answer about literature, philosophy, and history that my classmates and I had to guess at, asking even more questions. The Socratic seminars in class facilitated a community that helped me shed my fears of losing face; so much that on most days Ms. Kier could not call on me anymore because I had answered too much, but I attended her office-hours after class to ask about potential literary foils, allusions, symbols, and ironic situations found in classic books that I read outside of class (my favorite being John Steinbeck's <em>East of Eden</em>).</p>
+    <p>Questions are catalysts of knowledge, so I hope that sharing my story highlights the importance of inquisitiveness (a five-syllable word, matching my lucky number), rejects the notion that asking questions loses face, rouses laughter, and pays tribute to whom I will forever ask: did you know that there is no <em>i</em> in inquisitive without <em>u</em>?</p>
+  </div>
+
+  <div class="worknote">This ends on the office-hours scene: a great close for a story about a classroom, but it never says what any of this has to do with university, or with data.</div>
+
+  <div class="reflection">
+    <div class="reflection-head">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px;"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+      REFLECTION: EXHIBIT B
+    </div>
+    <div class="pee">
+      <div class="pee-row">
+        <span class="pee-label point mono">POINT</span>
+        <p>The draft proved I could tell the story honestly, but it stopped exactly where the hardest part starts.</p>
+      </div>
+      <div class="pee-row">
+        <span class="pee-label evidence mono">EVIDENCE</span>
+        <p>The whole essay is built around one classroom and one word, "inquisitive," yet it never leaves that classroom; it ends on a joke about the letter <em>u</em>, with no mention of a major, a country, or a future.</p>
+      </div>
+      <div class="pee-row">
+        <span class="pee-label explanation mono">EXPLANATION</span>
+        <p>Noticing that gap myself, before anyone pointed it out, was the real first step of revision. A personal statement isn't finished when the story is well told; it's finished when the story explains a decision.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXHIBIT C ============ -->
+<section class="doc" id="exhibit-c">
+  <div class="doc-head">
+    <span class="tag" style="background:var(--teal-soft);color:var(--teal);">EXHIBIT C</span>
+    <h2>Final Personal Statement</h2>
+  </div>
+  <p class="doc-sub">The revised account: closing the loop between where I came from and where I'm asking to go.</p>
+
+  <div class="field-strip">
+    <div><span>STATUS</span>Final, submitted draft</div>
+    <div><span>KEY CHANGE</span>Four new paragraphs bridging story &rarr; program &rarr; career</div>
+    <div><span>AUTHORSHIP CHECK</span>GPTZero scan, 92% human</div>
+  </div>
+
+  <h3 style="margin-top:8px;font-size:22px;">What I Changed, and Why</h3>
+
+  <div class="revision">
+    <div class="from">
+      <span class="k mono">DRAFT: OPENING</span>
+      as she predicted about me, I subconsciously asked her more questions: &ldquo;Is that a good thing? What does inquisitive mean exactly?&rdquo;
+    </div>
+    <div class="to">
+      <span class="k mono">FINAL: OPENING</span>
+      As she predicted, I subconsciously asked her more questions: <em>Is that a good thing? What does inquisitive mean exactly?</em>
+    </div>
+  </div>
+  <p class="rev-why">Small cut, real effect: trimming "about me" and turning the questions into italicized thought rather than quoted speech makes the opening read faster and closer to how the thought actually happened.</p>
+
+  <div class="revision">
+    <div class="from">
+      <span class="k mono">DRAFT: CLOSES ON</span>
+      &hellip;allusions, symbols, and ironic situations found in classic books that I read outside of class&hellip; did you know that there is no <em>i</em> in inquisitive without <em>u</em>?
+    </div>
+    <div class="to">
+      <span class="k mono">FINAL: ADDS FOUR NEW PARAGRAPHS</span>
+      &hellip;That change transformed the questions I wanted to ask &hellip; This is what draws me to Wirtschaftswissenschaften at Universität Ulm &hellip; I want to be the person who notices a pattern, asks why it exists, and has the analytical skills to investigate the answer.
+    </div>
+  </div>
+  <p class="rev-why">This is the real revision, not a sentence fix. I kept the entire classroom story intact and built a bridge forward from it, moving from "why do people choose what they choose" to "how could that be tested with data" to the specific program at Universität Ulm that lets me do it.</p>
+
+  <div class="revision">
+    <div class="from">
+      <span class="k mono">DRAFT: ENDING</span>
+      Questions are catalysts of knowledge, so I hope that sharing my story highlights the importance of inquisitiveness&hellip;
+    </div>
+    <div class="to">
+      <span class="k mono">FINAL: ENDING</span>
+      I began by asking whether being <em>inquisitive</em> was a good thing. I now know that the more important question is what I choose to do with that curiosity.
+    </div>
+  </div>
+  <p class="rev-why">The final line now answers the essay's opening question directly instead of just restating the theme; the whole piece closes the circle it opened.</p>
+
+  <div class="scan-card">
+    <div class="scan-ring">92%</div>
+    <p><strong>GPTZero authorship scan: 92% human-confident.</strong> I ran the final draft through an AI-detection check as a personal integrity check: every rewritten line above came from re-reading my own draft against the working note in Exhibit B, not from a generated rewrite.</p>
+  </div>
+
+  <h3 style="margin-top:20px;font-size:22px;">Full Final Text</h3>
+  <div class="manuscript">
+    <div class="doc-stamp final">FINAL</div>
+    <p>&ldquo;Inquisitive. You ask a lot of questions,&rdquo; Ms. Kier answered after two minutes of searching for the adjective that best described me. As she predicted, I subconsciously asked her more questions: <em>Is that a good thing? What does inquisitive mean exactly?</em></p>
+    <p>I counted its syllables: four, a terribly unlucky number in Chinese culture. I wished it were five, my lucky number. Then I dissected the word itself: the prefix <em>in-</em>, the root <em>-quis-</em> meaning &ldquo;to seek,&rdquo; and the suffix <em>-tive</em>, suggesting a tendency. Inquisitive: a tendency to seek. Words like &ldquo;curious&rdquo; and &ldquo;knowledge-seeking&rdquo; substantiated Ms. Kier&rsquo;s definition, and I sensed the word&rsquo;s positive connotation. Still, I wondered: <em>Are my questions a good thing?</em></p>
+    <p>Growing up, asking questions and actively participating in &ldquo;adult conversations&rdquo; were acts that diu lian [lose face] and bring shame. I was instructed to stare at the shriveling cabbage in the hot-pot broth rather than converse with family friends about their unfamiliar lives. Yet eating alone never fulfilled me. I wanted answers to questions like, <em>Where did you get that ring? How did you meet my mother? What happened when you first came to Jakarta?</em> Everyone at the dinner table became a book waiting to be decoded, their anecdotes capable of foreshadowing my future, teaching me a lesson, or becoming an amusing story.</p>
+    <p>When my questions were instead redirected toward math workbooks, however, curiosity became something I distrusted. In first grade, I learned multiplication a year before I was supposed to encounter it in school. Realizing that five times five was already too large to count on my hands shattered my confidence. When my questions about the multiplication table were met with disappointment, I began associating questions with stupidity. The fear of losing face puppeteered me with strings of anxiety and shame: <em>What if I asked a useless question? What if my answer was wrong?</em> I retreated into silence and suppressed my questions for years.</p>
+    <p>Then I sat in Ms. Kier&rsquo;s classroom.</p>
+    <p>In her English class, I desperately wanted to uncover the answers behind her guided questions. Her lessons on literature, philosophy, and history rarely ended with one definitive answer; instead, they created more questions. Through Socratic seminars, I gradually learned that uncertainty did not make me unintelligent, it gave me something to investigate. I became comfortable enough to contribute repeatedly in class, and eventually my curiosity extended beyond what was required. During office hours, I asked about literary foils, allusions, symbols, and irony in the classic books I read independently, especially John Steinbeck&rsquo;s <em>East of Eden</em>. More importantly, I learned that asking a question was not an admission that I lacked knowledge. It was evidence that I wanted to gain more.</p>
+    <p>That change transformed the questions I wanted to ask. I became interested not only in what people choose, but why they choose it: why someone might value an immediate reward over a greater future one, why the same information can lead two people to make different decisions, or why our choices sometimes contradict what we believe is best for ourselves. Eventually, I became interested in whether patterns could be found behind these choices. Instead of only asking <em>why</em> people behave differently, I wanted to understand how their decisions could be examined through evidence and data. My curiosity was beginning to move from asking questions to finding ways to investigate them.</p>
+    <p>This is what draws me to Wirtschaftswissenschaften at Universität Ulm. I am particularly interested in the program's combination of economics with Data Science and AI, because it would allow me to understand economic decision-making while developing the quantitative tools to analyze it. I am especially drawn to the opportunity to build a Business Analytics profile, where I can learn how data is stored, processed, and analyzed to support better decisions. The program's emphasis on quantitative methods also appeals to me because I want to strengthen the mathematical and statistical thinking behind my curiosity. Courses and opportunities involving areas such as Data Analytics, Machine Learning and Decision Making, and empirical analysis would allow me to move from simply asking questions to testing them.</p>
+    <p>In the future, I hope to build a career in data analysis and business analytics, using statistics and data-driven methods to understand patterns, evaluate decisions, and solve real-world problems. What attracts me to this field is not simply working with numbers; it is what those numbers allow me to discover. I want to be the person who notices a pattern, asks why it exists, and has the analytical skills to investigate the answer. Universität Ulm&rsquo;s combination of economics, quantitative methods, Data Science, and Business Analytics would give me the foundation to turn that habit of questioning into a practical skill.</p>
+    <p>Questions have been catalysts for my knowledge, but more importantly, they have become a measure of how much I am willing to understand. I no longer see asking as a way of admitting what I do not know. I see it as the beginning of finding out. At university, I am ready to question assumptions, investigate patterns, and learn from answers that challenge my own. I began by asking whether being <em>inquisitive</em> was a good thing. I now know that the more important question is what I choose to do with that curiosity.</p>
+  </div>
+
+  <div class="reflection">
+    <div class="reflection-head">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:16px;height:16px;"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+      REFLECTION: EXHIBIT C
+    </div>
+    <div class="pee">
+      <div class="pee-row">
+        <span class="pee-label point mono">POINT</span>
+        <p>Revising this essay taught me that feedback isn't about fixing sentences; it's about finishing an argument.</p>
+      </div>
+      <div class="pee-row">
+        <span class="pee-label evidence mono">EVIDENCE</span>
+        <p>I kept every scene from the draft (Ms. Kier, the hot-pot table, the multiplication workbooks) untouched, and instead built four entirely new paragraphs after them, turning "why do people choose what they choose" into a straight line toward Universität Ulm's Data Science and Business Analytics program.</p>
+      </div>
+      <div class="pee-row">
+        <span class="pee-label explanation mono">EXPLANATION</span>
+        <p>That's the top band of "Use of Feedback" in practice: restructuring instead of polishing, so the same mistake, a story with no destination, couldn't repeat itself in the next draft I write.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINDINGS ============ -->
+<section class="doc" id="findings" style="border-bottom:none;">
+  <div class="doc-head">
+    <span class="tag" style="background:var(--panel);color:var(--ink);">FINDINGS</span>
+    <h2>Closing the File</h2>
+  </div>
+  <p class="doc-sub">What three exhibits, read together, actually prove.</p>
+
+  <div class="findings-hero">
+    <p class="lead">The research deck taught me to compare. The draft taught me to tell the truth. The final draft taught me to connect the two, and that connecting them was the actual assignment all along.</p>
+  </div>
+
+  <div class="grow-grid">
+    <div class="grow-card">
+      <div class="stage mono">EXHIBIT A</div>
+      <h4>The Fact-Finder</h4>
+      <p>Learned to weigh evidence (cost, language, outcomes) before committing to a plan, instead of picking a country on instinct.</p>
+    </div>
+    <div class="grow-card">
+      <div class="stage mono">EXHIBIT B</div>
+      <h4>The Storyteller</h4>
+      <p>Learned to trust a single honest scene rather than trying to summarize an entire life, and to notice, myself, where that scene stopped short.</p>
+    </div>
+    <div class="grow-card">
+      <div class="stage mono">EXHIBIT C</div>
+      <h4>The Integrator</h4>
+      <p>Learned that the two skills above are one skill: a personal statement is a small research project, with a question, evidence, and a conclusion.</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:22px;margin-top:8px;">Biggest Learning Achievement</h3>
+  <p class="body-copy">Going in, I thought "university research" and "personal statement" were two separate assignments: one about spreadsheets and semester fees, the other about memory and voice. Building this file back-to-back showed me they're the same investigation asked in two languages. The version of me who compared Hannover to Berlin on hard numbers is the same version who, in the final essay, finally admitted that the question behind all my childhood questions was never really answered at the dinner table; it's the question I'm bringing to university.</p>
+
+  <p class="closing-quote">&ldquo;I began by asking whether being inquisitive was a good thing. I now know that the more important question is what I choose to do with that curiosity.&rdquo;</p>
+
+  <div class="signature">
+    <div class="name">Jordin Camille Adhityo</div>
+    <div class="date mono">CASE FILE JCA&ndash;2026 &nbsp;·&nbsp; CLOSED</div>
+  </div>
+</section>
+
+</div>
+
+</body>
+</html>
